@@ -14,16 +14,21 @@
         private $pwd;
 
         /**
-         * @var $pwd - соединение с БД
+         * @var $db - соединение с БД
          */
         private $db;
 
         public function __construct()
         {
-            $user   = "root";
-            $pwd    = "";
 
-            $this->db = new \PDO("mysql:host=localhost;dbname=bureau", $user, $pwd, array(
+            $info_db = parse_ini_file(realpath($_SERVER['DOCUMENT_ROOT'] . "/configs/database.ini"));
+
+            $user   = $info_db["db_user"];
+            $pwd    = $info_db["db_password"];
+
+            $connection = "mysql:host=" . $info_db["db_host"] .";dbname=" . $info_db["db_name"];
+
+            $this->db = new \PDO($connection, $user, $pwd, array(
                 \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
                 \PDO::ATTR_EMULATE_PREPARES   => false,
@@ -83,6 +88,8 @@
                                         WHERE id = '" . $_POST["personId"] . "';";
 
             $this->db->query($updUserComp);
+
+//            header("Location:../index.php");
         }
 
         /**
@@ -106,6 +113,7 @@
                                             WHERE id = '" . $_POST["personId"] . "';";
             $this->db->query($delCompPerson);
 
+//            header("Location:../index.php");
         }
 
         /**
@@ -136,6 +144,8 @@
                                         WHERE company.id = '". $companyId . "';";
 
             $this->db->query($updateCompany);
+
+//            header("Location:../index.php");
         }
 
         /**
