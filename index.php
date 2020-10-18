@@ -18,6 +18,7 @@
     $bureauInfo = $info[0];
     $persons    = $info[1];
 
+
 ?>
 
 <!doctype html>
@@ -63,7 +64,7 @@
                     </thead>
                     <tbody>
                         <?php foreach ($bureauInfo as $info) { ?>
-                            <tr id = "<?php echo $info["id"] ?>">
+                            <tr id = "<?php echo $info["company_id"] ?>">
                                 <td>
                                     <input type="text" class = "form-control disable" value = "<?php echo $info["surname"] ?>" readonly>
                                 </td>
@@ -91,15 +92,13 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <button class="btn btn-info edit" data-row="<?php echo $info["id"] ?>"></button>
-                                            <button class="btn btn-success edit-complete d-none" data-row="<?php echo $info["id"] ?>"></button>
+                                            <button class="btn btn-info edit" data-row="<?php echo $info["company_id"] ?>"></button>
+                                            <button class="btn btn-success edit-complete d-none" data-row="<?php echo $info["company_id"] ?>"></button>
                                         </div>
                                         <div class="col-sm-6">
                                             <form method="post" action="/Server/CRUD.php">
                                                 <input type="hidden" name="action"       value="delete">
-                                                <input type="hidden" name="titleCompany" value = "<?php echo $info["title"] ?>">
-                                                <input type="hidden" name="opfCompany"   value = "<?php echo $info["opf"] ?>">
-                                                <input type="hidden" name="personId"     value = "<?php echo $info["id"] ?>">
+                                                <input type="hidden" name="companyId" value = "<?php echo $info["company_id"] ?>">
                                                 <input type="submit" class="btn btn-sm btn-warning delete" value = "">
                                             </form>
                                         </div>
@@ -158,7 +157,7 @@
 
         /**
          * Обработка события нажатия на клавишу редактирования
-         *@var Object rowId        - id person, хранящееся в атрибуте поля, столбцы которого хранят информацию и человеке
+         *@var Object rowId        - id company, хранящееся в атрибуте поля, столбцы которого хранят информацию о компании и человеке
          *@var Object columns      - столбцы поля. Используется для предоставления пользователю
          *                           возможности редактирования содержимого данного поля путём
          *                           удаления атрибута readonly
@@ -169,7 +168,10 @@
             let rowId = el.target.getAttribute("data-row");
             let columns = $("#" + rowId)[0].children
 
-            for (let i = 0; i < columns.length; i++) {
+            console.log(rowId);
+            console.log(columns);
+
+            for (let i = 3; i < columns.length; i++) {
                 columns[i].children[0].removeAttribute("readonly");
             }
 
@@ -180,7 +182,7 @@
 
         /**
          * Обработка окончания редактирования поля
-         * @var Object dataForEdit - новые данные пользователя и компании,
+         * @var Object dataForEdit - новые данные компании,
          *               которые мы отправляем серверу для обновления
          *
          * После редактирования вновь запрещаем юзеру возможность редактировать
@@ -192,16 +194,13 @@
             let rowId = el.target.getAttribute("data-row");
             let columns = $("#" + rowId)[0].children
 
-            for (let i = 0; i < columns.length; i++) {
+            for (let i = 3; i < columns.length; i++) {
                 columns[i].children[0].setAttribute("readonly", "");
                 console.log(columns[i].children[0].value);
             }
 
             let dataForEdit = {
-                personId: rowId,
-                surname: columns[0].children[0].value,
-                name: columns[1].children[0].value,
-                year_of_birth: columns[2].children[0].value,
+                companyId: rowId,
                 gosreg_date: columns[3].children[0].value,
                 opf: columns[4].children[0].value,
                 title: columns[5].children[0].value,

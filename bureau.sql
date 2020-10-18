@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Окт 16 2020 г., 17:34
+-- Время создания: Окт 18 2020 г., 19:11
 -- Версия сервера: 10.4.13-MariaDB
 -- Версия PHP: 7.4.7
 
@@ -31,17 +31,17 @@ CREATE TABLE `company` (
   `id` int(10) UNSIGNED NOT NULL,
   `opf` varchar(10) NOT NULL,
   `title` varchar(100) NOT NULL,
-  `gosreg_date` date NOT NULL
+  `gosreg_date` date NOT NULL,
+  `person_id` smallint(5) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `company`
 --
 
-INSERT INTO `company` (`id`, `opf`, `title`, `gosreg_date`) VALUES
-(1, 'ООО', 'Ромашк', '2020-04-08'),
-(18, 'ИП', 'Маски', '2020-10-27'),
-(19, 'ООО', 'Древ', '2020-10-20');
+INSERT INTO `company` (`id`, `opf`, `title`, `gosreg_date`, `person_id`) VALUES
+(38, 'ООО', 'Кошки', '2020-10-18', 1),
+(39, 'ООО', 'Древо', '2020-10-16', 5);
 
 -- --------------------------------------------------------
 
@@ -53,20 +53,19 @@ CREATE TABLE `person` (
   `id` int(20) UNSIGNED NOT NULL,
   `name` varchar(20) CHARACTER SET utf8 NOT NULL,
   `surname` varchar(20) CHARACTER SET utf8 NOT NULL,
-  `year_of_birth` char(4) NOT NULL,
-  `company_id` smallint(5) UNSIGNED DEFAULT NULL
+  `year_of_birth` char(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `person`
 --
 
-INSERT INTO `person` (`id`, `name`, `surname`, `year_of_birth`, `company_id`) VALUES
-(1, 'Иван', 'Петров', '1998', 1),
-(2, 'Петр', 'Орлов', '1878', NULL),
-(3, 'Олег', 'Карандашев', '1798', 18),
-(4, 'Игорь', 'Петухов', '1688', NULL),
-(5, 'Андрей', 'Шалов', '1955', 19);
+INSERT INTO `person` (`id`, `name`, `surname`, `year_of_birth`) VALUES
+(1, 'Иван', 'Петров', '1998'),
+(2, 'Петр', 'Орлов', '1878'),
+(3, 'Олег', 'Карандашев', '1798'),
+(4, 'Игорь', 'Петухов', '1687'),
+(5, 'Андре', 'Шал', '1955');
 
 --
 -- Индексы сохранённых таблиц
@@ -84,8 +83,7 @@ ALTER TABLE `company`
 ALTER TABLE `person`
   ADD PRIMARY KEY (`id`),
   ADD KEY `name` (`name`),
-  ADD KEY `surname` (`surname`),
-  ADD KEY `company_id` (`company_id`);
+  ADD KEY `surname` (`surname`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -95,7 +93,7 @@ ALTER TABLE `person`
 -- AUTO_INCREMENT для таблицы `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT для таблицы `person`
