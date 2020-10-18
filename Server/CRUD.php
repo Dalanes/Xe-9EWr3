@@ -19,24 +19,24 @@
 
         $db->create();
 
-        header("Location:../index.php");
+        header("Location:../");
 
         /**
          * Удаление компании человека
          * на вход приходит
-         *          $_POST['personId']       - id person
+         *          $_POST['companyId']       - id person
          */
 
     } else if ($_POST["action"] === "delete") {
 
         $db->delete();
 
-        header("Location:../index.php");
+        header("Location:../");
 
         /**
          * Редактирование информации о пользователе и его компании
          * Информация на входе $_POST[
-         *           personId       - id person
+         *           companyId      - id company
          *           surname        - фамилия человека
          *           name:          - его имя
          *           year_of_birth: - дата рождения
