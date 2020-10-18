@@ -1,45 +1,23 @@
 <?php
-    namespace Server;
+    namespace Server\Database\Crud;
 
-    class Bureau {
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/Server/Database/Database.php";
 
-        /**
-         * @var $username - логин юзера для доступа к БД
-         */
-        private $username;
+    use Server\Database\Database;
 
-        /**
-         * @var $pwd - пароль юзера для доступа к БД
-         */
-        private $pwd;
-
-        /**
-         * @var $db - соединение с БД
-         */
-        private $db;
+    class Bureau extends Database
+    {
 
         public function __construct()
         {
-
-            $info_db = parse_ini_file(realpath($_SERVER['DOCUMENT_ROOT'] . "/configs/database.ini"));
-
-            $user   = $info_db["db_user"];
-            $pwd    = $info_db["db_password"];
-
-            $connection = "mysql:host=" . $info_db["db_host"] .";dbname=" . $info_db["db_name"];
-
-            $this->db = new \PDO($connection, $user, $pwd, array(
-                \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                \PDO::ATTR_EMULATE_PREPARES   => false,
-            ));
+            parent::__construct();
         }
 
         /**
          * Получение данных о людях и их компании
          *
          * @var String $bureauInfoQuery - запрос на получение данных о людях и их компании
-         * @var String $personsQuery    - запрос на получение id, name person
+         * @var String $personsQuery    - запрос на получение id, name человека
          *
          * @return array[]
          */
@@ -68,7 +46,6 @@
          * Создание новой компании человека
          *
          * @var String $addCompany      - запрос на создание новой компании
-         *
          */
 
         public function create()
@@ -104,7 +81,6 @@
 
         public function edit()
         {
-
             $updateCompany = $this->db->prepare("UPDATE company SET gosreg_date = ?, opf = ?, 
                                                                              title = ? 
                                                                 WHERE company.id = ?");
@@ -114,30 +90,9 @@
             $updateCompany->execute(array($gosregDate, $_POST["opf"], $_POST["title"], $_POST["companyId"]));
         }
 
-        /**
-         * Вспомогательный метод обработки select запросов
-         * для упрощённой работы с полученными данными
-         *
-         * @param $query
-         * @return array
-         */
-
-        public function select($query)
-        {
-            $bureauInfo = [];
-
-            foreach($this->db->query($query) as $keyFirst => $row) {
-                foreach ($row as $keySecond => $col) {
-                    $bureauInfo[$keyFirst][$keySecond] = $col;
-                }
-            }
-
-            return $bureauInfo;
-        }
-
         public function __destruct()
         {
-            $this->bd = null;
+            $this->db = null;
         }
     }
 ?>

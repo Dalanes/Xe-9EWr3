@@ -1,9 +1,11 @@
 <?php
     namespace Server;
 
-    require_once "Bureau.php";
+    require_once "../Database/Crud/Bureau.php";
 
-    $db = new Bureau();
+    use Server\Database\Crud\Bureau;
+
+    $bureau = new Bureau();
 
     /**
      * Создание новой компании человека
@@ -17,29 +19,27 @@
 
     if ($_POST["action"] === "create") {
 
-        $db->create();
+        $bureau->create();
 
-        header("Location:../");
+        header("Location: ".$_SERVER['HTTP_REFERER']);
 
         /**
          * Удаление компании человека
          * на вход приходит
-         *          $_POST['companyId']       - id person
+         *          $_POST['companyId']       - id компании
          */
 
     } else if ($_POST["action"] === "delete") {
 
-        $db->delete();
+        $bureau->delete();
 
-        header("Location:../");
+        header("Location: ".$_SERVER['HTTP_REFERER']);
+
 
         /**
-         * Редактирование информации о пользователе и его компании
+         * Редактирование информации о компании
          * Информация на входе $_POST[
          *           companyId      - id company
-         *           surname        - фамилия человека
-         *           name:          - его имя
-         *           year_of_birth: - дата рождения
          *           gosreg_date:   - дата регистрации компании
          *           opf:           - опф компании
          *           title:         - наименование компании
@@ -48,7 +48,7 @@
          */
 
     } else if ($_POST["action"] === "edit") {
-        $db->edit();
+        $bureau->edit();
     }
 
 ?>
